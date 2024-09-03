@@ -2,18 +2,18 @@ import { Text,View,StyleSheet,Image } from "react-native";
 import Title from "../components/ui/Title";
 import Colors from "../constants/colors";
 import PrimaryButton from "../components/ui/PrimaryButton";
-function GameOverScreen(){
+function GameOverScreen({userNumber,gameRounds,restart}){
   return <View style={styles.rootContainer}>
     <Title>GameOver</Title>
     <View style={styles.imageContainer}>
       <Image style={styles.image} source={require('../assets/images/success.png')}/>
     </View>
     <Text style={styles.summaryText}>Your phone needed 
-      <Text style={styles.highlight}> X </Text>
+      <Text style={styles.highlight}> {gameRounds} </Text>
        rounds to get the number 
-      <Text style={styles.highlight}> Y</Text>
+      <Text style={styles.highlight}> {userNumber}</Text>
     </Text>
-    <PrimaryButton>Start New Game</PrimaryButton>
+    <PrimaryButton onPress={restart}>Start New Game</PrimaryButton>
   </View>
 
 }

@@ -8,6 +8,7 @@ import InstructionText from "../components/ui/InstructionText";
 import {Ionicons} from '@expo/vector-icons';
 let minNumber=1;
 let maxNumber=100;
+let roundsCounter=0;
 function GameScreen({userNumber,onGameOver}){
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -23,12 +24,18 @@ function GameScreen({userNumber,onGameOver}){
   const [currentGuess,setCurrentGuess]=useState(initialGuess);
   useEffect(()=>{
     if(currentGuess===userNumber){
-      onGameOver();
+      onGameOver(roundsCounter);
      
     }
-  },[currentGuess,userNumber,onGameOver])
+  },[currentGuess,userNumber,onGameOver]);
+  useEffect(()=>{
+     minNumber=1;
+     maxNumber=100;
+     roundsCounter=0;
+  },[]);
   function guessCheckHandler(guessDirection){
     if((guessDirection==='lower' && currentGuess>userNumber)||(guessDirection==='higher' && currentGuess<userNumber)){
+      roundsCounter++;
   
     if(guessDirection==='lower'){
       maxNumber=currentGuess;

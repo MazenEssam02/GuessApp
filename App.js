@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, ImageBackground,SafeAreaView} from 'react-native';
+import { StyleSheet, ImageBackground,SafeAreaView,TouchableWithoutFeedback, Keyboard} from 'react-native';
 import StartGameScreen from './screens/StartGameScreen';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from "./constants/colors";
@@ -7,6 +7,7 @@ import GameScreen from './screens/GameScreen';
 import {useFonts} from 'expo-font';
 import GameOverScreen from './screens/GameOverScreen';
 import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'expo-status-bar';
 export default function App() {
   const [userNumber,setUserNumber]=useState();
   const [gameIsOver,setGameIsOver]=useState(false);
@@ -38,11 +39,18 @@ export default function App() {
     screen=<GameOverScreen userNumber={userNumber} gameRounds={gameRounds} restart={restartHandler}/>
   }
  return(
-  <LinearGradient style={styles.rootScreen} colors={[Colors.primary700,Colors.accent500]}>
+  <>
+  <StatusBar style='light'/>
+  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+    <LinearGradient style={styles.rootScreen} colors={[Colors.primary700,Colors.accent500]}>
     <ImageBackground source={require('./assets/images/background.png')} style={styles.rootScreen} resizeMode='cover' imageStyle={styles.backgroundImage}>
     <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
     </ImageBackground>
   </LinearGradient>
+  </TouchableWithoutFeedback>
+
+  </>
  );
 }
 

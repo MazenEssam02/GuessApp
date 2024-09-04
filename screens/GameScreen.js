@@ -6,18 +6,17 @@ import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import {Ionicons} from '@expo/vector-icons';
+import GameLog from "../components/game/GameLog";
 let minNumber=1;
 let maxNumber=100;
 let roundsCounter=0;
 function GameScreen({userNumber,onGameOver}){
-  function generateRandomBetween(min, max, exclude) {
-    const rndNum = Math.floor(Math.random() * (max - min)) + min;
-  
-    if (rndNum === exclude) {
-      return generateRandomBetween(min, max, exclude);
-    } else {
-      return rndNum;
-    }
+  const [logArray,setLogArray]=useState([]);
+
+  function logHandler(newGuess){
+    
+      setLogArray((logArray)=>[newGuess,...logArray]);
+    
   }
 
   const initialGuess=generateRandomBetween(1,100,userNumber);
@@ -33,10 +32,21 @@ function GameScreen({userNumber,onGameOver}){
      maxNumber=100;
      roundsCounter=0;
   },[]);
+  function generateRandomBetween(min, max, exclude) {
+    const rndNum = Math.floor(Math.random() * (max - min)) + min;
+  
+    if (rndNum === exclude) {
+      return generateRandomBetween(min, max, exclude);
+    } else {
+      return rndNum;
+    }
+  }
+
+
   function guessCheckHandler(guessDirection){
     if((guessDirection==='lower' && currentGuess>userNumber)||(guessDirection==='higher' && currentGuess<userNumber)){
       roundsCounter++;
-  
+      logHandler({id:roundsCounter,number:currentGuess});
     if(guessDirection==='lower'){
       maxNumber=currentGuess;
     }
@@ -50,6 +60,7 @@ function GameScreen({userNumber,onGameOver}){
     
   }
   }
+
 return(
   <View style={styles.gameContainer}>
     <Title>Opponent's Guess</Title>
@@ -72,6 +83,7 @@ return(
             </View>
           </View>
     </Card>
+   <GameLog logArray={logArray}/>
   </View>
 )
 }
